@@ -1,0 +1,1 @@
+// TODO: create trigger function that takes an updated event/market object and amends the sites array

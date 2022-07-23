@@ -3,7 +3,6 @@ import { GETSchema } from './';
 import { CreateMarketSchema } from "./markets";
 
 export const GETEventSchema = (limit_maximum: number = 100) => GETSchema(limit_maximum).extend({
-    // TODO: filter events by multiple sites e.g. site=pointsbet,sportsbet,neds
     site: z.string().optional(),
     sport_ref: z.string().optional(),
     league_ref: z.string().optional(),

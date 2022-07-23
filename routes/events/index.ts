@@ -4,26 +4,9 @@ import createError, { isHttpError } from 'http-errors';
 import { MongoClient, Db, ObjectId } from "mongodb";
 import clientPromise from "../../utils/mongo/mongodb";
 import { GETEventSchema, CreateEventSchema, UpdateEventSchema } from "../../utils/schemas/events";
-// import withAdmin from '@/utils/api/withAdmin';
-// import withMiddleware from '@/utils/api/withMiddleware';
-// import withMethodGuard from '@/utils/api/withMethodGuard';
-// import withExceptionFilter from '@/utils/api/withExceptionFilter';
 import { calculateSkip } from '../../utils/pagination';
 import { arrangeEventUpdate } from '../../utils/mongo/arrangeUpdate';
 import { validateAdminKey } from '../../middleware/auth';
-/**
- * @swagger
- * /events:
- *   get:
- *     summary: Lists a subset of available events
- *     parameters:
- *       - in: query
- *         name: limit
- *       - in: query
- *         name: skip
- *   post:
- *     summary: Creates or Updates an event
- */
 
 let router = express.Router();
 
@@ -31,10 +14,6 @@ const MAX_EVENTS_RETURNED = 25
 const DEFAULT_PAGE = 1
 const COLLECTION = "events";
 
-enum is_normalised {
-    true = "true",
-    false = "false"
-}
 
 router.get('/', async (req, res, next) => {
     const client: MongoClient = await clientPromise;
@@ -44,15 +23,17 @@ router.get('/', async (req, res, next) => {
         return next(result.error)
     } else {
         const { limit, page, site, ...rest } = result.data;
-        let siteArray = site ? site.split(",") : [];
-        let event_cursor;
+
         let find_query;
+        let siteArray = site ? site.split(",") : [];
         if (siteArray.length) { find_query = { ...rest, sites: { $elemMatch: { $in: siteArray } } } }
         else { find_query = { ...rest } }
+
         let doc_count = await db.collection(COLLECTION).countDocuments(find_query);
         let skip = calculateSkip(limit ? limit : MAX_EVENTS_RETURNED, page ? page : DEFAULT_PAGE);
-        event_cursor = await db.collection(COLLECTION).find(find_query, { limit: limit ? limit : MAX_EVENTS_RETURNED, skip, sort: [["last_updated", -1]] })
+        let event_cursor = await db.collection(COLLECTION).find(find_query, { limit: limit ? limit : MAX_EVENTS_RETURNED, skip, sort: [["last_updated", -1]] })
         let data = await event_cursor.toArray()
+
         res.status(StatusCodes.OK).json({
             data, _meta: {
                 page: page ? page : DEFAULT_PAGE,
@@ -67,10 +48,9 @@ router.get('/', async (req, res, next) => {
 router.post('/', validateAdminKey, async (req, res, next) => {
     const client: MongoClient = await clientPromise;
     const db: Db = client.db(process.env.MONGODB_DB)
-    // create or update event event
     // check if body formatted correctly
     const parsed_body = CreateEventSchema.parse(req.body);
-    // check if event exists, if yes, then we update
+    // check if event exists, if yes, then it is a bad request
     const exists = await db.collection(COLLECTION).findOne({
         sport_ref: parsed_body.sport_ref,
         league_ref: parsed_body.league_ref,
@@ -110,7 +90,6 @@ router.get('/:event_id', async (req, res, next) => {
     }
 })
 
-// TODO: make admin route
 router.post('/:event_id', validateAdminKey, async (req, res, next) => {
     const { event_id } = req.params;
     const client: MongoClient = await clientPromise;
@@ -135,7 +114,6 @@ router.post('/:event_id', validateAdminKey, async (req, res, next) => {
     }
 })
 
-// TODO: make admin route
 router.delete('/:event_id', validateAdminKey, async (req, res, next) => {
     const { event_id } = req.params;
     const client: MongoClient = await clientPromise;
@@ -147,15 +125,5 @@ router.delete('/:event_id', validateAdminKey, async (req, res, next) => {
         res.status(StatusCodes.ACCEPTED).json(null)
     }
 })
-
-// TODO: port middleware from this comment to express 
-// export default (req: NextApiRequest, res: NextApiResponse) => {
-//     const handler = withMiddleware(
-//         withMethodGuard(['GET', 'POST']),
-//         withAdmin,
-//         routeHandler
-//     )
-//     return withExceptionFilter(req, res)(handler)
-// }
 
 export default router;

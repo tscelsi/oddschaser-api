@@ -36,6 +36,7 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
 ### The Events Object
 
 ```
+    "_id": "62d9da913d0fa1cfec176efe",
     "sport_ref": "volleyball",
     "sport_label": "Volleyball",
     "league_ref": "fivb nations league",
@@ -95,36 +96,37 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
 
 ```
 {
-    id: 62dbd29e03c7ee0045a6861c,
-    sport_ref: basketball,
-    sport_label: Basketball,
-    league_ref: nba,
-    league_label: NBA,
-    event_ref: la_lakers_vs_chicago_bulls,
-    event_label: "La Lakers vs Chicago Bulls",
-    market_ref: handicap,
-    market_label: Handicap,
-    market_value: 3.5,
-    market_category: "Handicap Markets",
-    event_start_timestamp: "2022-10-10T10:30:34:333Z",
-    team_name: null,
-    player_name: null,
-    odds: {
-        odd_name_mapping: {
-            la_lakers: "La Lakers",
-            chicago_bulls: "Chicago Bulls"
+    "_id": "62dbd29e03c7ee0045a6861c",
+    "sport_ref": "basketball",
+    "sport_label": "Basketball",
+    "league_ref": "nba",
+    "league_label": "NBA",
+    "event_ref": "la_lakers_vs_chicago_bulls",
+    "event_label": "La Lakers vs Chicago Bulls",
+    "market_ref": "handicap",
+    "market_label": "Handicap",
+    "market_value": 3.5,
+    "market_category": "Handicap Markets",
+    "event_start_timestamp": "2022-10-10T10:30:34:333Z",
+    "team_name": null,
+    "player_name": null,
+    "odds": {
+        "odd_name_mapping": {
+            "la_lakers": "La Lakers",
+            "chicago_bulls": "Chicago Bulls"
         },
-        sites: {
-            neds: {
-                la_lakers: 1.5,
-                chicago_bulls: 2.1
+        "sites": {
+            "neds": {
+                "la_lakers": 1.5,
+                "chicago_bulls": 2.1
             },
-            sportsbet: {
-                la_lakers: 1.61,
-                chicago_bulls: 2.05
+            "sportsbet": {
+                "la_lakers": 1.61,
+                "chicago_bulls": 2.05
             }
         }
-    }
+    },
+    "sites": ["neds", "sportsbet"]
 }
 ```
 

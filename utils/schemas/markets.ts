@@ -2,8 +2,7 @@ import { optional, z } from "zod";
 import { GETSchema } from './';
 
 export const GETMarketSchema = (limit_maximum: number = 100) => GETSchema(limit_maximum).extend({
-    // TODO: filter markets by multiple sites e.g. site=pointsbet,sportsbet,neds
-    // site: z.string().optional(),
+    site: z.string().optional(),
     sport_ref: z.string().optional(),
     event_ref: z.string().optional(),
     league_ref: z.string().optional(),
@@ -29,18 +28,21 @@ export const CreateMarketSchema = z.object({
     odds: z.object({
         odd_name_mapping: z.record(z.string()),
         sites: z.record(z.record(z.number()))
-    })
+    }),
+    sites: z.string().array()
 }).strict()
 
 /**
  * Once a market has been created, we only ever want to edit the following fields:
  * - last_updated
  * - odds.sites
+ * - sites
  */
 export const UpdateMarketSchema = z.object({
     odds: z.object({
         sites: z.record(z.record(z.number()))
-    })
+    }),
+    sites: z.string().array()
 })
 
 export type CreateMarketType = z.infer<typeof CreateMarketSchema>;
