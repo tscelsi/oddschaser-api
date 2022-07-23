@@ -1,6 +1,6 @@
 ![OddsChaserAPI](logo.svg)
 
-## The OddsChaser API
+# The OddsChaser API
 
 This API is a consumer-focused API meant to be used for retrieving sporting events and betting markets which get updated with near-real-time odds from up to 12 Australian bookmakers.
 
@@ -16,7 +16,7 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
 
 ---------
 
-# Retrieving a market
+## Retrieving a market
 
 Here's an example market object:
 
@@ -63,3 +63,8 @@ Here's an example market object:
 
 
 ### Interpreting the results
+
+## Notable Tools
+
+We utilise what we think to be a decent stack of packages to ensure that API requests are formatted correctly and valid.
+In particular we rely heavily on [zod]() to do the heavy lifting when validating requests.
