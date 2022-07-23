@@ -16,9 +16,82 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
 
 ---------
 
-## Retrieving a market
+- [The OddsChaser API](#the-oddschaser-api)
+  - [Retrieving events](#retrieving-events)
+    - [The Events Object](#the-events-object)
+    - [Attributes](#attributes)
+    - [Query Parameters](#query-parameters)
+    - [Making an API Request](#making-an-api-request)
+  - [Retrieving markets](#retrieving-markets)
+    - [The Markets Object](#the-markets-object)
+    - [Attributes](#attributes-1)
+    - [Query Parameters](#query-parameters-1)
+    - [Making an API Request](#making-an-api-request-1)
+  - [Notable Tools](#notable-tools)
 
-Here's an example market object:
+---
+
+## Retrieving events
+
+### The Events Object
+
+```
+    "sport_ref": "volleyball",
+    "sport_label": "Volleyball",
+    "league_ref": "fivb nations league",
+    "league": "fivb nations league",
+    "league_label": "Fivb Nations League",
+    "event_ref": "poland_vs_usa",
+    "event_label": "Poland Vs Usa",
+    "home": "Poland",
+    "away": "USA",
+    "site_event_name": "Poland v USA",
+    "frontend_urls": {
+        "sportsbet": "https://www.sportsbet.com.au/betting/Volleyball/Nations-League-Men/Poland-v-USA-6688144",
+        "betright": "https://www.betright.com.au/sports/Volleyball/World/FIVB-Nations-League/Poland-v-USA/507027//"
+    },
+    "team_a": "poland",
+    "team_b": "usa",
+    "href": "none",
+    "markets": {
+        "handicap_points---usa---none---6--dot--50": {
+            "market_label": "Handicap Points",
+            "market_raw": "Point Handicap",
+            "market_ref": "handicap_points---usa---none---6--dot--50",
+            "market_value": 6.5,
+            "odds": {
+                "odd_name_mapping": {
+                    "poland": "Poland (-6.5)",
+                    "usa": "Usa (+6.5)"
+                },
+                "sites": {
+                    "sportsbet": {
+                        "poland": 1.92,
+                        "usa": 1.81
+                    },
+                    "betright": {
+                        "poland": 1.91,
+                        "usa": 1.8
+                    }
+                }
+            },
+            "player_name": null,
+            "team_name": "usa"
+        }
+    }
+```
+
+### Attributes
+
+### Query Parameters
+
+### Making an API Request
+
+---
+
+## Retrieving markets
+
+### The Markets Object
 
 ```
 {
@@ -55,14 +128,15 @@ Here's an example market object:
 }
 ```
 
-### Querying the API
+### Attributes
+
+### Query Parameters
+
+### Making an API Request
 
 ```/markets```
 
 ```/markets/:market_id```
-
-
-### Interpreting the results
 
 ## Notable Tools
 
