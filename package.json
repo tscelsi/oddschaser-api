@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^1.32.0",
-    "@supabase/supabase-js": "^1.35.4",
     "@ungap/structured-clone": "^1.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
