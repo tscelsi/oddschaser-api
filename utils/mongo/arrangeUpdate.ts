@@ -1,6 +1,6 @@
-import { Site, Market, OddsType, Selection } from "types";
-import { CreateMarketType, UpdateMarketType } from "../schemas/markets";
-import { UpdateEventType } from "../schemas/events";
+import { Site, Market, OddsType, Selection } from "types"
+import { CreateMarketType, UpdateMarketType } from "../schemas/markets"
+import { UpdateEventType } from "../schemas/events"
 
 export const arrangeEventUpdate = (event: UpdateEventType): object => {
     // for site in data["frontend_urls"]:
@@ -16,9 +16,9 @@ export const arrangeEventUpdate = (event: UpdateEventType): object => {
     // for market_name in data["markets"]:
     //     curr_market = data["markets"][market_name]
     const market_updates = Object.keys(event.markets).reduce((acc, market_name) => {
-        let curr_market = event.markets[market_name];
+        let curr_market = event.markets[market_name]
         let site_odds = Object.keys(curr_market.odds.sites).reduce((acc, site) => {
-            let current_odds = curr_market.odds as OddsType; // we don't ever receive multi odd for update.
+            let current_odds = curr_market.odds as OddsType // we don't ever receive multi odd for update.
             return { ...acc, [`markets.${market_name}.odds.sites.${site}`]: current_odds.sites[site] }
         }, {})
         return {
@@ -41,15 +41,15 @@ export const arrangeEventUpdate = (event: UpdateEventType): object => {
 }
 
 export const arrangeMarketUpdate = (odds: OddsType) => {
-    let market_sites_updates: Record<string, Selection> = {};
+    let market_sites_updates: Record<string, Selection> = {}
     Object.entries(odds.sites).forEach((a => {
-        market_sites_updates[`odds.sites.${a[0]}`] = a[1];
-    }));
+        market_sites_updates[`odds.sites.${a[0]}`] = a[1]
+    }))
     const set_operations = {
         $set: {
             ...market_sites_updates,
             last_updated: new Date(Date.now())
         }
     }
-    return set_operations;
+    return set_operations
 }

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod"
 
 export const GETSchema = (limit_maximum: number = 100) => z.object({
     limit: z.preprocess(
@@ -9,7 +9,7 @@ export const GETSchema = (limit_maximum: number = 100) => z.object({
         (a) => parseInt(a as string, 10),
         z.number().nonnegative()
     ).optional()
-});
+})
 
 export const LeagueSchema = z.object({
     _id: z.string(),
@@ -19,7 +19,7 @@ export const LeagueSchema = z.object({
     league_ref: z.string().optional(),
     is_normalised: z.boolean(),
     last_updated: z.string()
-});
+})
 
 export const TeamSchema = z.object({
     _id: z.string(),
@@ -66,4 +66,4 @@ const getResponse = z.object({
     data: LeagueSchema.or(TeamSchema).or(MarketSchema)
 })
 
-export const successfulResponse = listResponse.or(getResponse);
+export const successfulResponse = listResponse.or(getResponse)

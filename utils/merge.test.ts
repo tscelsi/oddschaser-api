@@ -1,28 +1,28 @@
-import { compare_type, merge } from "./merge";
+import { compare_type, merge } from "./merge"
 
 test('get_type returns object when two objects', () => {
-    let x = {};
-    let y = {};
-    expect(compare_type(x, y)).toBe("object");
+    let x = {}
+    let y = {}
+    expect(compare_type(x, y)).toBe("object")
 })
 
 test('compare_type returns array when two arrays', () => {
-    let x: any = [];
-    let y: any = [];
-    expect(compare_type(x, y)).toBe("array");
+    let x: any = []
+    let y: any = []
+    expect(compare_type(x, y)).toBe("array")
 })
 
 test('compare_type returns string when two strings', () => {
-    let x = "a";
-    let y = "b";
-    expect(compare_type(x, y)).toBe("string");
+    let x = "a"
+    let y = "b"
+    expect(compare_type(x, y)).toBe("string")
 })
 
 test('compare_type returns mixed when mixed types', () => {
-    let x = {};
-    let y: any[] = [];
-    expect(compare_type(x, y)).toBe("mixed");
-    expect(compare_type(y, x)).toBe("mixed");
+    let x = {}
+    let y: any[] = []
+    expect(compare_type(x, y)).toBe("mixed")
+    expect(compare_type(y, x)).toBe("mixed")
 })
 
 test('merge two objects with different keys', () => {
@@ -33,24 +33,24 @@ test('merge two objects with different keys', () => {
      * So they become: {a:1, b:2}
      */
 
-    let obj1 = { a: 1 };
+    let obj1 = { a: 1 }
     let obj2 = { b: 2 }
     let result = merge(obj1, obj2)
     expect(result).toEqual({ a: 1, b: 2 })
 })
 
 test('two arrays merge', () => {
-    let obj1 = { a: [1] };
-    let obj2 = { a: [2] };
-    let obj3 = { a: [2, 3] };
+    let obj1 = { a: [1] }
+    let obj2 = { a: [2] }
+    let obj3 = { a: [2, 3] }
     expect(merge(obj1, obj2)).toEqual({ a: [1, 2] })
     expect(merge(obj1, obj3)).toEqual({ a: [1, 2, 3] })
     expect(merge(obj2, obj3)).toEqual({ a: [2, 2, 3] })
 })
 
 test('two objects, same key but different type, overrides', () => {
-    let obj1 = { a: [1] };
-    let obj2 = { a: "a" };
+    let obj1 = { a: [1] }
+    let obj2 = { a: "a" }
     expect(merge(obj1, obj2)).toEqual({ a: "a" })
 })
 

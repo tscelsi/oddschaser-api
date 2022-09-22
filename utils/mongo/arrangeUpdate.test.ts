@@ -1,4 +1,4 @@
-import { arrangeMarketUpdate } from "./arrangeUpdate";
+import { arrangeMarketUpdate } from "./arrangeUpdate"
 
 test('simple market update', () => {
     let updateMarketObj = {
@@ -18,7 +18,7 @@ test('simple market update', () => {
         }
     }
     const result = arrangeMarketUpdate(updateMarketObj)
-    const { $set: { last_updated, ...rest } } = result;
+    const { $set: { last_updated, ...rest } } = result
     expect(rest).toEqual(
         {
             'odds.sites.pointsbet': {

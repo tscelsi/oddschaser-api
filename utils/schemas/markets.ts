@@ -1,5 +1,5 @@
-import { optional, z } from "zod";
-import { GETSchema } from './';
+import { optional, z } from "zod"
+import { GETSchema } from './'
 
 export const GETMarketSchema = (limit_maximum: number = 100) => GETSchema(limit_maximum).extend({
     site: z.string().optional(),
@@ -17,7 +17,7 @@ export const CreateMarketSchema = z.object({
     event_ref: z.string(),
     event_label: z.string(),
     start_timestamp: z.preprocess((arg) => {
-        if (typeof arg === "string" || arg instanceof Date) return new Date(arg);
+        if (typeof arg === "string" || arg instanceof Date) return new Date(arg)
     }, z.date()),
     market_ref: z.string(),
     market_raw: z.string(),
@@ -61,7 +61,7 @@ export const UpdateMarketSchema = z.object({
     }),
 })
 
-export type CreateMarketType = z.infer<typeof CreateMarketSchema>;
-export type UpdateMarketType = z.infer<typeof UpdateMarketSchema>;
-export type EventMarketType = z.infer<typeof EventMarketSchema>;
-export type OddsType = z.infer<typeof OddsSchema>;
+export type CreateMarketType = z.infer<typeof CreateMarketSchema>
+export type UpdateMarketType = z.infer<typeof UpdateMarketSchema>
+export type EventMarketType = z.infer<typeof EventMarketSchema>
+export type OddsType = z.infer<typeof OddsSchema>

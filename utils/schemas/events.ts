@@ -1,6 +1,6 @@
-import { z } from "zod";
-import { GETSchema } from './';
-import { CreateMarketSchema } from "./markets";
+import { z } from "zod"
+import { GETSchema } from './'
+import { CreateMarketSchema } from "./markets"
 
 export const GETEventSchema = (limit_maximum: number = 100) => GETSchema(limit_maximum).extend({
     site: z.string().optional(),
@@ -42,5 +42,5 @@ export const UpdateEventSchema = z.object({
     sites: z.string().array()
 })
 
-export type CreateEventType = z.infer<typeof CreateEventSchema>;
-export type UpdateEventType = z.infer<typeof UpdateEventSchema>;
+export type CreateEventType = z.infer<typeof CreateEventSchema>
+export type UpdateEventType = z.infer<typeof UpdateEventSchema>

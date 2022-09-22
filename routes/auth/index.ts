@@ -12,7 +12,7 @@ const DEFAULT_LIMIT = 1000
 const DEFAULT_USER_TYPE = 'user'
 const DEFAULT_ACCESSES = 0
 
-// create a basic new user object
+// create a new user
 router.post('/create', async (req, res, next) => {
     const client: MongoClient = await clientPromise
     const db: Db = client.db(process.env.MONGODB_DB)

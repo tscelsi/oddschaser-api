@@ -1,20 +1,20 @@
-import { Db, ObjectId } from "mongodb";
-import { CreateMarketType, CreateMarketSchema } from "./schemas/markets";
-import { arrangeMarketUpdate } from './mongo/arrangeUpdate';
+import { Db, ObjectId } from "mongodb"
+import { CreateMarketType, CreateMarketSchema } from "./schemas/markets"
+import { arrangeMarketUpdate } from './mongo/arrangeUpdate'
 
 const MARKET_COLLECTION = 'markets'
 
 export const updateMarket = async (db: Db, market: CreateMarketType, upsert = false, validate = false) => {
-    let body: CreateMarketType;
+    let body: CreateMarketType
     if (validate) {
         const result = CreateMarketSchema.safeParse(market)
         if (!result.success) {
             console.log(result.error)
             throw result.error
         }
-        body = result.data;
+        body = result.data
     } else {
-        body = market;
+        body = market
     }
     // does the market already exist in db?
     const alreadyExists = await db.collection(MARKET_COLLECTION).findOne({
@@ -25,8 +25,8 @@ export const updateMarket = async (db: Db, market: CreateMarketType, upsert = fa
     })
     if (alreadyExists) {
         // generate mongo update query
-        const updateQuery = arrangeMarketUpdate(body.odds);
-        const updateResult = await db.collection(MARKET_COLLECTION).findOneAndUpdate({ _id: new ObjectId(alreadyExists._id) }, updateQuery, { returnDocument: "after" });
+        const updateQuery = arrangeMarketUpdate(body.odds)
+        const updateResult = await db.collection(MARKET_COLLECTION).findOneAndUpdate({ _id: new ObjectId(alreadyExists._id) }, updateQuery, { returnDocument: "after" })
         return updateResult.value
     } else if (!alreadyExists && !upsert) {
         console.log("market not found")
