@@ -17,7 +17,7 @@ export const CreateEventSchema = z.object({
     event_ref: z.string(),
     event_label: z.string(),
     start_timestamp: z.string(),
-    href: z.string(),
+    links: z.record(z.string()),
     site_event_name: z.string(),
     frontend_urls: z.record(z.string()),
     team_a: z.string(),
@@ -28,6 +28,12 @@ export const CreateEventSchema = z.object({
     scrape_time_mapping: z.record(z.string()),
     sites: z.string().array()
 }).strict()
+
+export const EventIdentifierSchema = z.object({
+    sport_ref: z.string(),
+    league_ref: z.string(),
+    event_ref: z.string(),
+})
 
 export const UpdateEventSchema = z.object({
     frontend_urls: z.record(z.string()),

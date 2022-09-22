@@ -1,9 +1,9 @@
 import express from 'express';
 import { StatusCodes } from 'http-status-codes';
-import createError, { isHttpError } from 'http-errors';
+import createError from 'http-errors';
 import { MongoClient, Db, ObjectId } from "mongodb";
 import clientPromise from "../../utils/mongo/mongodb";
-import { GETMarketSchema, CreateMarketSchema, UpdateMarketSchema } from "../../utils/schemas/markets";
+import { GETMarketSchema, CreateMarketSchema, UpdateMarketSchema, EventMarketType } from "../../utils/schemas/markets";
 import { calculateSkip } from '../../utils/pagination';
 import { arrangeMarketUpdate } from '../../utils/mongo/arrangeUpdate';
 import { validateAdminKey } from '../../middleware/auth';
@@ -22,8 +22,7 @@ router.get('/', async (req, res, next) => {
     if (!result.success) {
         return next(result.error)
     } else {
-        const { limit, page, site, ...rest } = result.data
-
+        const { limit, page, site, query, ...rest } = result.data
         let find_query
         let siteArray = site ? site.split(",") : []
         if (siteArray.length) { find_query = { ...rest, sites: { $elemMatch: { $in: siteArray } } } }
@@ -45,45 +44,45 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.post('/', validateAdminKey, async (req, res, next) => {
-    const client: MongoClient = await clientPromise;
-    const db: Db = client.db(process.env.MONGODB_DB)
-    // check if body formatted correctly
-    const result = CreateMarketSchema.safeParse(req.body);
-    if (!result.success) {
-        return next(result.error)
-    } else {
-        let parsed_body = result.data;
-        // check if market exists
-        const exists = await db.collection(COLLECTION).findOne({
-            sport_ref: parsed_body.sport_ref,
-            league_ref: parsed_body.league_ref,
-            event_ref: parsed_body.event_ref,
-            market_ref: parsed_body.market_ref
-        })
-        if (exists) {
-            // we don't update, we return a bad request
-            return next(createError(StatusCodes.BAD_REQUEST, "market already exists, try updating it instead"));
-        } else {
-            // if event doesn't exist, then we insert
-            let insert_result;
-            try {
-                insert_result = await db.collection(COLLECTION).insertOne({ ...parsed_body, last_updated: new Date(Date.now()) })
-            } catch (exception: any) {
-                switch (exception.code) {
-                    case 11000:
-                        return next(createError(StatusCodes.BAD_REQUEST, "event already exists"));
-                    default:
-                        return next(createError(StatusCodes.BAD_REQUEST, "cannot insert event"));
-                }
-            }
-            if (insert_result.acknowledged) {
-                const new_event = await db.collection(COLLECTION).findOne({ _id: new ObjectId(insert_result.insertedId) })
-                res.status(StatusCodes.CREATED).json(new_event);
-            }
-        }
-    }
-})
+// router.post('/', validateAdminKey, async (req, res, next) => {
+//     const client: MongoClient = await clientPromise;
+//     const db: Db = client.db(process.env.MONGODB_DB)
+//     // check if body formatted correctly
+//     const result = CreateMarketSchema.safeParse(req.body);
+//     if (!result.success) {
+//         return next(result.error)
+//     } else {
+//         let parsed_body = result.data;
+//         // check if market exists
+//         const exists = await db.collection(COLLECTION).findOne({
+//             sport_ref: parsed_body.sport_ref,
+//             league_ref: parsed_body.league_ref,
+//             event_ref: parsed_body.event_ref,
+//             market_ref: parsed_body.market_ref
+//         })
+//         if (exists) {
+//             // we don't update, we return a bad request
+//             return next(createError(StatusCodes.BAD_REQUEST, "market already exists, try updating it instead"));
+//         } else {
+//             // if event doesn't exist, then we insert
+//             let insert_result;
+//             try {
+//                 insert_result = await db.collection(COLLECTION).insertOne({ ...parsed_body, last_updated: new Date(Date.now()) })
+//             } catch (exception: any) {
+//                 switch (exception.code) {
+//                     case 11000:
+//                         return next(createError(StatusCodes.BAD_REQUEST, "event already exists"));
+//                     default:
+//                         return next(createError(StatusCodes.BAD_REQUEST, "cannot insert event"));
+//                 }
+//             }
+//             if (insert_result.acknowledged) {
+//                 const new_event = await db.collection(COLLECTION).findOne({ _id: new ObjectId(insert_result.insertedId) })
+//                 res.status(StatusCodes.CREATED).json(new_event);
+//             }
+//         }
+//     }
+// })
 
 router.get('/:market_id', async (req, res, next) => {
     const { market_id } = req.params;
@@ -97,29 +96,29 @@ router.get('/:market_id', async (req, res, next) => {
     }
 })
 
-router.post('/:market_id', validateAdminKey, async (req, res, next) => {
-    const { market_id } = req.params;
-    const client: MongoClient = await clientPromise;
-    const db: Db = client.db(process.env.MONGODB_DB)
-    const result = UpdateMarketSchema.safeParse(req.body);
-    if (!result.success) {
-        return next(result.error)
-    } else {
-        const body = result.data;
-        const updateQuery = arrangeMarketUpdate(body);
-        // update
-        try {
-            const updateResult = await db.collection(COLLECTION).findOneAndUpdate({ _id: new ObjectId(market_id as string) }, updateQuery, { returnDocument: "after" });
-            if (!updateResult.value) {
-                return next(createError(StatusCodes.NOT_FOUND, "market not found"));
-            }
-            res.status(StatusCodes.ACCEPTED).json({ data: updateResult.value });
-        } catch (exception) {
-            if (isHttpError(exception)) throw exception;
-            return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, "error updating market in database. Try again later"));
-        }
-    }
-})
+// router.post('/:market_id', validateAdminKey, async (req, res, next) => {
+//     const { market_id } = req.params;
+//     const client: MongoClient = await clientPromise
+//     const db: Db = client.db(process.env.MONGODB_DB)
+//     const result = UpdateMarketSchema.safeParse(req.body)
+//     if (!result.success) {
+//         return next(result.error)
+//     } else {
+//         const body = result.data;
+//         const updateQuery = arrangeMarketUpdate(body);
+//         // update
+//         try {
+//             const updateResult = await db.collection(COLLECTION).findOneAndUpdate({ _id: new ObjectId(market_id as string) }, updateQuery, { returnDocument: "after" });
+//             if (!updateResult.value) {
+//                 return next(createError(StatusCodes.NOT_FOUND, "market not found"));
+//             }
+//             res.status(StatusCodes.ACCEPTED).json({ data: updateResult.value });
+//         } catch (exception) {
+//             if (isHttpError(exception)) throw exception;
+//             return next(createError(StatusCodes.INTERNAL_SERVER_ERROR, "error updating market in database. Try again later"));
+//         }
+//     }
+// })
 
 router.delete('/:market_id', validateAdminKey, async (req, res, next) => {
     const { market_id } = req.params;

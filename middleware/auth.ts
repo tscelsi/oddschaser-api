@@ -7,6 +7,7 @@ import { MongoUser } from "types";
 import { UniqueTokenStrategy } from 'passport-unique-token';
 import passport from 'passport';
 
+
 // api-key support
 passport.use(
     new UniqueTokenStrategy(async (token, done) => {
@@ -16,7 +17,6 @@ passport.use(
             const user = await db.collection('users').findOne<MongoUser>({ _key: token });
             if (!user) return done(null, false);
             return done(null, user);
-
         } catch (err: any) {
             return done(err);
         }
@@ -41,7 +41,7 @@ export const validateAdminKey = (req: Request, res: Response, next: NextFunction
         const user = req.user;
         // @ts-ignore
         if (user._type !== 'admin') {
-            return next(createError(StatusCodes.FORBIDDEN, 'unable to access admin locked resources'))
+            return next(createError(StatusCodes.FORBIDDEN, 'forbidden'))
         }
         return next();
     } else {

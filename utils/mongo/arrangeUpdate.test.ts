@@ -2,32 +2,32 @@ import { arrangeMarketUpdate } from "./arrangeUpdate";
 
 test('simple market update', () => {
     let updateMarketObj = {
-        last_updated: "testdate",
-        odds: {
-            sites: {
-                pointsbet: {
-                    chicago_bulls: 1.3,
-                    la_lakers: 2.2
-                },
-                sportsbet: {
-                    chicago_bulls: 1.3,
-                    la_lakers: 2.2
-                }
+        sites: {
+            pointsbet: {
+                chicago_bulls: 1.3,
+                la_lakers: 2.2
+            },
+            sportsbet: {
+                chicago_bulls: 1.3,
+                la_lakers: 2.2
             }
+        },
+        odd_name_mapping: {
+            chicago_bulls: "Chicago Bulls",
+            la_lakers: "LA Lakers"
         }
     }
-    expect(arrangeMarketUpdate(updateMarketObj)).toEqual(
+    const result = arrangeMarketUpdate(updateMarketObj)
+    const { $set: { last_updated, ...rest } } = result;
+    expect(rest).toEqual(
         {
-            $set: {
-                last_updated: "testdate",
-                'odds.sites.pointsbet': {
-                    chicago_bulls: 1.3,
-                    la_lakers: 2.2
-                },
-                'odds.sites.sportsbet': {
-                    chicago_bulls: 1.3,
-                    la_lakers: 2.2
-                }
+            'odds.sites.pointsbet': {
+                chicago_bulls: 1.3,
+                la_lakers: 2.2
+            },
+            'odds.sites.sportsbet': {
+                chicago_bulls: 1.3,
+                la_lakers: 2.2
             }
         })
 })

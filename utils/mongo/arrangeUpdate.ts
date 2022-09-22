@@ -1,5 +1,5 @@
 import { Site, Market, OddsType, Selection } from "types";
-import { UpdateMarketType } from "../schemas/markets";
+import { CreateMarketType, UpdateMarketType } from "../schemas/markets";
 import { UpdateEventType } from "../schemas/events";
 
 export const arrangeEventUpdate = (event: UpdateEventType): object => {
@@ -40,9 +40,9 @@ export const arrangeEventUpdate = (event: UpdateEventType): object => {
     return query
 }
 
-export const arrangeMarketUpdate = (market: UpdateMarketType) => {
+export const arrangeMarketUpdate = (odds: OddsType) => {
     let market_sites_updates: Record<string, Selection> = {};
-    Object.entries(market.odds.sites).forEach((a => {
+    Object.entries(odds.sites).forEach((a => {
         market_sites_updates[`odds.sites.${a[0]}`] = a[1];
     }));
     const set_operations = {

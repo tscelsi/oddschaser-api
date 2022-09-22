@@ -14,7 +14,7 @@ Answer questions such as:
 
 We publically expose `safe` GET endpoints, while making it easy to update the appropriate data structures through POST and DELETE endpoints. These will only be admin-accessible.
 
----------
+---
 
 - [The OddsChaser API](#the-oddschaser-api)
   - [Retrieving events](#retrieving-events)
@@ -47,39 +47,39 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
     "home": "Poland",
     "away": "USA",
     "site_event_name": "Poland v USA",
-    "frontend_urls": {
+    "links": {
         "sportsbet": "https://www.sportsbet.com.au/betting/Volleyball/Nations-League-Men/Poland-v-USA-6688144",
         "betright": "https://www.betright.com.au/sports/Volleyball/World/FIVB-Nations-League/Poland-v-USA/507027//"
     },
     "team_a": "poland",
     "team_b": "usa",
-    "href": "none",
-    "markets": {
-        "handicap_points---usa---none---6--dot--50": {
-            "market_label": "Handicap Points",
-            "market_raw": "Point Handicap",
-            "market_ref": "handicap_points---usa---none---6--dot--50",
-            "market_value": 6.5,
-            "odds": {
-                "odd_name_mapping": {
-                    "poland": "Poland (-6.5)",
-                    "usa": "Usa (+6.5)"
-                },
-                "sites": {
-                    "sportsbet": {
-                        "poland": 1.92,
-                        "usa": 1.81
+    "markets": [
+            {
+                "market_label": "Handicap Points",
+                "market_raw": "Point Handicap",
+                "market_ref": "handicap_points---usa---none---6--dot--50",
+                "market_value": 6.5,
+                "odds": {
+                    "odd_name_mapping": {
+                        "poland": "Poland (-6.5)",
+                        "usa": "Usa (+6.5)"
                     },
-                    "betright": {
-                        "poland": 1.91,
-                        "usa": 1.8
+                    "sites": {
+                        "sportsbet": {
+                            "poland": 1.92,
+                            "usa": 1.81
+                        },
+                        "betright": {
+                            "poland": 1.91,
+                            "usa": 1.8
+                        }
                     }
-                }
-            },
-            "player_name": null,
-            "team_name": "usa"
+                },
+                "player_name": null,
+                "team_name": "usa"
+            }
         }
-    }
+    ]
 ```
 
 ### Attributes
@@ -136,9 +136,9 @@ We publically expose `safe` GET endpoints, while making it easy to update the ap
 
 ### Making an API Request
 
-```/markets```
+`/markets`
 
-```/markets/:market_id```
+`/markets/:market_id`
 
 ## Notable Tools
 
