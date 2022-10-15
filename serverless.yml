@@ -1,0 +1,26 @@
+service: test-app
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: eu-central-1
+  memorySize: 128
+  environment:
+    MONGODB_DB: oddschaserapi
+    MONGODB_URI: ${env:MONGODB_URI}
+functions:
+  app:
+    handler: app.handler
+    events: 
+      - http: 
+          path: /{proxy+}
+          method: ANY
+          cors: true
+package:
+  individually: true

@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config()
 }
 import 'module-alias/register'
+import serverless from 'serverless-http'
 import createError, { HttpError } from 'http-errors'
 import express, { Express, Request, Response, NextFunction } from 'express'
 import path from 'path'
@@ -54,7 +55,8 @@ app.use(function (err: Error, req: Request, res: Response, next: NextFunction) {
 }
 })
 
-const port = 3000
-app.listen(port, () => {
-  console.log(`application is running on port ${port}.`)
-})
+// const port = 3001
+// app.listen(port, () => {
+//   console.log(`application is running on port ${port}.`)
+// })
+export const handler = serverless(app)
