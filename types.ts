@@ -115,7 +115,7 @@ export interface CreateEventType {
     home: string,
     away: string,
     site_event_name: string,
-    frontend_urls: Record<Site, string>,
+    links: Record<Site, string>,
     team_a: string,
     team_b: string,
     markets: Record<string, Market>,

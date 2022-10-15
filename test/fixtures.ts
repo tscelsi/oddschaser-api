@@ -9,10 +9,6 @@ const sport_event = {
     "away": "USA",
     "site_event_name": "Poland v USA",
     "start_timestamp": "2021-09-24T18:00:00.000Z",
-    "frontend_urls": {
-        "sportsbet": "https://sportsbet.com",
-        "betright": "https://betright.com"
-    },
     "scrape_time_mapping": {
         "sportsbet": "2021-09-24T18:00:00.000Z",
         "betright": "2021-09-24T18:00:00.000Z"

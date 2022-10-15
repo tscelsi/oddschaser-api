@@ -19,7 +19,6 @@ export const CreateEventSchema = z.object({
     start_timestamp: z.string(),
     links: z.record(z.string()),
     site_event_name: z.string(),
-    frontend_urls: z.record(z.string()),
     team_a: z.string(),
     team_b: z.string(),
     home: z.string(),
@@ -36,7 +35,7 @@ export const EventIdentifierSchema = z.object({
 })
 
 export const UpdateEventSchema = z.object({
-    frontend_urls: z.record(z.string()),
+    links: z.record(z.string()),
     markets: z.record(CreateMarketSchema),
     scrape_time_mapping: z.record(z.string()),
     sites: z.string().array()

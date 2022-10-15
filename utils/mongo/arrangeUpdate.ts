@@ -3,10 +3,10 @@ import { CreateMarketType, UpdateMarketType } from "../schemas/markets"
 import { UpdateEventType } from "../schemas/events"
 
 export const arrangeEventUpdate = (event: UpdateEventType): object => {
-    // for site in data["frontend_urls"]:
-    //     query[f"frontend_urls.{site}"] = data["frontend_urls"][site]
-    const frontend_url_updates = Object.keys(event.frontend_urls).reduce((acc, site) => {
-        return { ...acc, [`frontend_urls.${site}`]: event.frontend_urls[site as Site] }
+    // for site in data["links"]:
+    //     query[f"links.{site}"] = data["links"][site]
+    const frontend_url_updates = Object.keys(event.links).reduce((acc, site) => {
+        return { ...acc, [`links.${site}`]: event.links[site as Site] }
     }, {} as Record<Site, string>)
     // for site in data["scrape_time_mapping"]:
     //     query[f"scrape_time_mapping.{site}"] = data["scrape_time_mapping"][site]
