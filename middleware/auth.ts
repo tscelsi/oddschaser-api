@@ -6,15 +6,16 @@ import clientPromise from "../utils/mongo/mongodb"
 import { MongoUser } from "types"
 import { UniqueTokenStrategy } from 'passport-unique-token'
 import passport from 'passport'
-
+import sha256 from 'crypto-js/sha256';
 
 // api-key support
 passport.use(
     new UniqueTokenStrategy(async (token, done) => {
         const client: MongoClient = await clientPromise
         const db: Db = await client.db(process.env.MONGODB_DB)
+        const tokenHash = sha256(token)
         try {
-            const user = await db.collection('users').findOne<MongoUser>({ _key: token })
+            const user = await db.collection('users').findOne<MongoUser>({ _key: tokenHash })
             if (!user) return done(null, false)
             return done(null, user)
         } catch (err: any) {

@@ -17,6 +17,7 @@ import indexRouter from "./routes"
 import eventsRouter from './routes/events'
 import marketsRouter from './routes/markets'
 import authRouter from './routes/auth'
+import usersRouter from './routes/users'
 
 var app: Express = express()
 
@@ -31,6 +32,7 @@ app.use('/', indexRouter)
 app.use('/markets', validateApiKey, rateLimit, marketsRouter)
 app.use('/events', validateApiKey, rateLimit, eventsRouter)
 app.use('/auth', validateApiKey, validateAdminKey, authRouter)
+app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req: Request, res: Response, next: NextFunction) {
